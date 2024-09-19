@@ -14,9 +14,9 @@ export default function App() {
   const [selectedId, setSelectedId] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState([]);
 
-  const [watched, setWatched] = useState(function () {
+  const [watched, setWatched] = useState(() => {
     const storedValue = localStorage.getItem("watched");
-    return JSON.parse(storedValue);
+    return storedValue ? JSON.parse(storedValue) : [];
   });
 
   function addWatchedMovieHandler(movie) {
@@ -35,7 +35,7 @@ export default function App() {
           setIsLoading(true);
           setError("");
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+            `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
             { signal: controller.signal }
           );
 
@@ -157,7 +157,7 @@ function MovieDetails({
     Director: director,
   } = selectedMovie;
 
-  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+  const isWatched = watched?.map((movie) => movie.imdbID).includes(selectedId);
 
   const watchedRating = watched.find(
     (movie) => movie.imdbID === selectedId
@@ -356,7 +356,7 @@ function WatchedMoviesList({ watched, deleteMovieHandler }) {
   return (
     <>
       <ul className="list">
-        {watched.map((movie) => (
+        {watched?.map((movie) => (
           <WatchedMovies
             movie={movie}
             key={movie.imdbID}
@@ -398,9 +398,9 @@ function WatchedMovies({ movie, deleteMovieHandler }) {
   );
 }
 function Summary({ watched }) {
-  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
+  const avgImdbRating = average(watched?.map((movie) => movie.imdbRating));
+  const avgUserRating = average(watched?.map((movie) => movie.userRating));
+  const avgRuntime = average(watched?.map((movie) => movie.runtime));
   return (
     <div className="summary">
       <h2>Movies you watched</h2>
