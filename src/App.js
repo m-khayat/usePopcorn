@@ -49,7 +49,6 @@ export default function App() {
           }
 
           setMovies(data.Search);
-          console.log(data);
         } catch (err) {
           if (err.name !== "AbortError") setError(err.message);
         } finally {
@@ -78,7 +77,7 @@ export default function App() {
           `https://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
         );
         const data = await res.json();
-        console.log(data);
+
         setSelectedMovie(data);
       }
       movieDetails();
@@ -333,7 +332,7 @@ function Movieslist({ movies, setSelectedId, selectedId }) {
 function Movies({ movie, setSelectedId, selectedId }) {
   function selectMovieHamdler() {
     setSelectedId(movie.imdbID);
-    console.log(movie.imdbID);
+
     if (movie.imdbID === selectedId) {
       setSelectedId(null);
     }
